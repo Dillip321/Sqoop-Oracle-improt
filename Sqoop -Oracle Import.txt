@@ -1,0 +1,36 @@
+How to do import from Oracle DataBase to HDFS :
+-----------------------------------------------
+
+Let Hostname : abc.de.com
+Port : 1825
+Service Name (Xe) : abcd.de.com
+
+Schmea and table name : test1.employee
+
+Columns name : Emp_id,Emp_name,Emp_Dept,Emp_Salary
+
+User Name : test
+Password  : test 
+
+Go to the etc/alternatives, then you can find sqoop-import tools, folder might be varied based on the Cloudera Set up.
+Then run the below command to fetch the data from Oracle Tables.
+
+SQOOP-import --connect jdbc:oracle:thin:system/system@abc.de.com:1825/abcd.de.com --username test -P --table test1.employee \
+--columns "Emp_id,Emp_name,Emp_Dept,Emp_Salary" --target-dir /user/Dillip/sqoopoutput -m -1
+
+Note: Sqoopoutput is the folder will be created by Sqoop in the hdfs file with path /user/Dillip/, So you need not to create it earlier,
+otherwise sqoop will through error.
+
+You can create the Sqoop with Boundary condition :
+---------------------------------------------------
+
+
+SQOOP-import --connect jdbc:oracle:thin:system/system@abc.de.com:1825/abcd.de.com --username test -P --table test1.employee \
+--columns "Emp_id,Emp_name,Emp_Dept,Emp_Salary" --target-dir /user/Dillip/sqoopoutput -m -1 --where "Emp_Dept='Consultancy'"
+
+You can verify the Data in the HDFS filesystem:
+----------------------------------------------------------
+
+hadoop fs -ls /user/Dillip/sqoopoutput/
+
+
